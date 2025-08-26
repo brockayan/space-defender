@@ -15,13 +15,16 @@ body, html {
 }
 
 #container {
-  max-width: 1200px;
+  max-width: 800px;       /* keep game narrow & centered */
   margin: 0 auto;
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  align-items: center;    /* center everything horizontally */
+  text-align: center;     /* center text like title & footer */
   min-height: 100vh;
 }
+
 
 /* Header */
 header {
@@ -70,11 +73,14 @@ nav button:hover:not(:disabled) {
 /* Main game area + stats and instructions layout */
 #gameArea {
   display: flex;
+  flex-direction: column; /* stack canvas & overlay */
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
   position: relative;
+  width: 100%;
 }
+
 
 #gameCanvas {
   width: 100%;
@@ -100,11 +106,23 @@ nav button:hover:not(:disabled) {
   background-color: #001f2fcc;
   padding: 1rem 2rem;
   border-radius: 12px;
-  display: none;
+  display: none;          /* hidden by default */
+  text-align: center;     /* center text inside */
   pointer-events: none;
   user-select: none;
   z-index: 10;
 }
+
+/* Show overlay when JS adds .visible */
+#overlay.visible {
+  display: block;
+}
+
+/* Ensure inner h2/p don’t inherit solid background */
+#overlay * {
+  background-color: transparent;
+}
+
 
 /* Stats panel */
 #statsPanel {
@@ -114,11 +132,13 @@ nav button:hover:not(:disabled) {
   border: 2px solid #0ff;
   border-radius: 12px;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
   max-width: 600px;
   width: 100%;
   box-shadow: 0 0 15px #0ff;
+  text-align: center;
 }
+
 
 .stat {
   display: flex;
@@ -162,7 +182,9 @@ nav button:hover:not(:disabled) {
   color: #0ff;
   font-size: 1rem;
   line-height: 1.5;
+  text-align: left;
 }
+
 
 #instructions h2 {
   font-family: 'Orbitron', sans-serif;
