@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Space Defender: Ultimate Edition</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>🚀 Space Defender: Ultimate Edition 🚀</h1>
+      <nav>
+        <button id="startBtn">START GAME</button>
+        <button id="pauseBtn" disabled>PAUSE</button>
+        <button id="muteBtn">🔊 Mute</button>
+      </nav>
+    </header>
+
+    <section id="gameArea">
+      <canvas id="gameCanvas" width="600" height="800" aria-label="Game Canvas"></canvas>
+      <div id="overlay" aria-live="polite" role="alert" aria-atomic="true"></div>
+    </section>
+
+    <aside id="statsPanel" aria-label="Game stats">
+      <div class="stat">
+        <label for="score">Score</label>
+        <div id="score" tabindex="0">0</div>
+      </div>
+      <div class="stat">
+        <label for="lives">Lives</label>
+        <div id="lives" tabindex="0">3</div>
+      </div>
+      <div class="stat">
+        <label for="level">Level</label>
+        <div id="level" tabindex="0">1</div>
+      </div>
+      <div class="stat">
+        <label for="powerups">Powerups</label>
+        <div id="powerupsContainer" tabindex="0"></div>
+      </div>
+    </aside>
+
+    <section id="instructions" aria-label="Game instructions">
+      <h2>How to Play</h2>
+      <ul>
+        <li>Use <strong>Arrow Left / Right</strong> or <strong>A / D</strong> to move your spaceship.</li>
+        <li>Press <strong>Space</strong> or <strong>Arrow Up</strong> to shoot lasers.</li>
+        <li>Destroy enemy ships to score points.</li>
+        <li>Collect power-ups dropped by enemies: extra lives or double guns.</li>
+        <li>Don't let enemies hit you or reach the bottom of the screen.</li>
+        <li>Survive as long as you can and climb levels to increase difficulty.</li>
+      </ul>
+      <p><em>Good luck, pilot!</em></p>
+    </section>
+
+    <footer>
+      <p>Created by Ayan Chogle 🚀 | 2025</p>
+    </footer>
+  </div>
+
+  <script src="game.js" defer></script>
+</body>
+</html>
