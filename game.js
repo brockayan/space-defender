@@ -385,11 +385,12 @@
   // Handle player movement & shooting
   function handleInput(delta) {
     if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-      player.x -= player.speed;
-    }
-    if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-      player.x += player.speed;
-    }
+  player.x -= player.speed * (delta / 16);
+}
+if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+  player.x += player.speed * (delta / 16);
+}
+
     player.x = clamp(player.x, 0, W - player.width);
 
     if (keys[' '] || keys['ArrowUp']) {
@@ -526,7 +527,7 @@
       enemySpawnTimerCurrent = 0;
 
       // Decrease spawn time with cap
-      if (enemySpawnTimer > 700) enemySpawnTimer -= 30;
+      if (enemySpawnTimer > 1200) enemySpawnTimer -= 5;
     }
 
     // Level progression every 30 seconds
@@ -553,12 +554,18 @@
 
   // Game over
   function gameOver() {
-    gameState = 'gameover';
-    overlay.innerHTML = `Game Over!<br>Final Score: ${score}<br>Press START to try again`;
-    overlay.classList.add('visible');
-    pauseBtn.disabled = true;
-    startBtn.disabled = false;
-  }
+  gameState = 'gameover';
+  overlay.innerHTML = `
+    <h2>💀 GAME OVER 💀</h2>
+    <p>Final Score: ${score}</p>
+    <p>Press <strong>START</strong> to play again</p>
+  `;
+  overlay.classList.add('visible');
+  pauseBtn.disabled = true;
+  startBtn.disabled = false;
+  startBtn.textContent = "START AGAIN";
+}
+
 
   // Pause game toggle
   function togglePause() {
@@ -576,14 +583,16 @@
 
   // Start game
   function startGame() {
-    resetGame();
-    gameState = 'playing';
-    startBtn.disabled = true;
-    pauseBtn.disabled = false;
-    pauseBtn.textContent = 'PAUSE';
-    overlay.classList.remove('visible');
-    requestAnimationFrame(gameLoop);
-  }
+  resetGame();
+  gameState = 'playing';
+  startBtn.disabled = true;
+  startBtn.textContent = "START GAME";   // reset button label
+  pauseBtn.disabled = false;
+  pauseBtn.textContent = 'PAUSE';
+  overlay.classList.remove('visible');
+  requestAnimationFrame(gameLoop);
+}
+
 
   // Event listeners
   startBtn.addEventListener('click', startGame);
@@ -593,9 +602,16 @@
     muteBtn.textContent = muted ? '🔇 Muted' : '🔊 Mute';
   });
 
-  window.addEventListener('keydown', (e) => {
-    if (e.repeat) return;
-    keys[e.key] = true;
+ window.addEventListener('keydown', (e) => {
+  if (e.repeat) return;
+
+  // Prevent page scrolling on Space & Arrow keys
+  if ([" ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+    e.preventDefault();
+  }
+
+  keys[e.key] = true;
+
 
     if ((gameState === 'start' || gameState === 'gameover') && e.key === 'Enter') {
       startGame();
@@ -612,9 +628,13 @@
   // Game loop
   let lastTime = 0;
   function gameLoop(timestamp = 0) {
-    if (!lastTime) lastTime = timestamp;
-    const delta = timestamp - lastTime;
-    lastTime = timestamp;
+  if (!lastTime) lastTime = timestamp;
+  let delta = timestamp - lastTime;
+  lastTime = timestamp;
+
+  // Cap delta to avoid lag spikes
+  if (delta > 40) delta = 40;
+
 
     if (gameState === 'playing') {
       handleInput(delta);
@@ -628,4 +648,5 @@
   overlay.textContent = 'Press START or ENTER to begin';
   overlay.classList.add('visible');
   pauseBtn.disabled = true;
+  
 })();
